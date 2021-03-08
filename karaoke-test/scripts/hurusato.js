@@ -22,7 +22,6 @@ function load() {
 
     // This object is the class that will contain the buffer
     var midiBuffer;
-
     var startAudioButton = document.querySelector(".activate-audio");
     var stopAudioButton = document.querySelector(".stop-audio");
     //var statusDiv = document.querySelector(".status");
