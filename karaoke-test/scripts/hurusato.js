@@ -1,21 +1,22 @@
-var hurusato = "T: ふるさと\n" + 
-                "M: 3/4\n" + 
-                "K: G\n" +
-                "L: 1/4\n"+
-                "G2 G2 G2|A3 B A2|B2 B2 c2|d4 z2|\n" +
-                "w:う さ ぎ| お い し | か の や|ま\n" +
-                "c2 d2 e2|B3 c B2|A2 A2 F2|G4 z2|\n" + 
-                "w: こ ぶ な |つ り し|か の か |わ\n" +
-                "AG A2 D2|GA B2 B2|cB (c3 e)|dc B2 z2|\n" +
-                "w: ゆ ー め は|い ー ま も|め ー ぐ ー |り ー て\n" +
-                "d2 d2 d2|G3 A B2| c2 c2 A2| G4 z2:|\n" + 
-                "w: わ す れ|が た き|ふ る さ|と";
+var hurusato = "T: ふるさと\n" +
+    "M: 3/4\n" +
+    "K: G\n" +
+    "L: 1/4\n" +
+    "G2 G2 G2|A3 B A2|B2 B2 c2|d4 z2|\n" +
+    "w:う さ ぎ| お い し | か の や|ま\n" +
+    "c2 d2 e2|B3 c B2|A2 A2 F2|G4 z2|\n" +
+    "w: こ ぶ な |つ り し|か の か |わ\n" +
+    "AG A2 D2|GA B2 B2|cB (c3 e)|dc B2 z2|\n" +
+    "w: ゆ ー め は|い ー ま も|め ー ぐ ー |り ー て\n" +
+    "d2 d2 d2|G3 A B2| c2 c2 A2| G4 z2:|\n" +
+    "w: わ す れ|が た き|ふ る さ|と";
 
 function load() {
-    // First draw the music - this supplies an object that has a lot of information about how to create the synth.
-    // NOTE: If you want just the sound without showing the music, use "*" instead of "paper" in the renderAbc call.
+    // music notation(hurusato) => SVG image
+    // show SVG image on "paper"
     var visualObj = ABCJS.renderAbc("paper", hurusato, {
-        responsive: "resize" })[0];
+        responsive: "resize"
+    })[0];
     var timingCallbacks = new ABCJS.TimingCallbacks(visualObj, {
         eventCallback: eventCallback
     });
@@ -24,14 +25,28 @@ function load() {
     var midiBuffer;
     var startAudioButton = document.querySelector(".activate-audio");
     var stopAudioButton = document.querySelector(".stop-audio");
+    var recordingDiv = document.querySelector(".recording");
     //var statusDiv = document.querySelector(".status");
 
-    startAudioButton.addEventListener("click", function() {
+    var mediaRecorder = null;
+    var recordStream;
+
+    startAudioButton.addEventListener("click", function () {
         timingCallbacks.start();
         startAudioButton.setAttribute("style", "display:none;");
+        recordingDiv.setAttribute("style", "color: red;");
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (recordStream) {
+                localstream = recordStream;
+                mediaRecorder = new MediaRecorder(recordStream);
+                mediaRecorder.start();
+            })
+            .catch(function (e) {
+                console.log(e);
+            });
         //statusDiv.innerHTML = "<div>Testing browser</div>";
         if (ABCJS.synth.supportsAudio()) {
-            // display:none; => ""
+            // show stop button
             stopAudioButton.setAttribute("style", "");
 
             // An audio context is needed - this can be passed in for two reasons:
@@ -43,28 +58,25 @@ function load() {
                 navigator.mozAudioContext ||
                 navigator.msAudioContext;
             var audioContext = new window.AudioContext();
+            // then: 成功した場合に実行される。
             audioContext.resume().then(function () {
-                //statusDiv.innerHTML += "<div>AudioContext resumed</div>";
-                // In theory the AC shouldn't start suspended because it is being initialized in a click handler, but iOS seems to anyway.
-
                 // This does a bare minimum so this object could be created in advance, or whenever convenient.
                 midiBuffer = new ABCJS.synth.CreateSynth();
 
                 // midiBuffer.init preloads and caches all the notes needed. There may be significant network traffic here.
                 return midiBuffer.init({
                     visualObj: visualObj,
-                    audioContext: audioContext,
-                    millisecondsPerMeasure: visualObj.millisecondsPerMeasure()
+                    audioContext: audioContext
                 }).then(function (response) {
-                    //statusDiv.innerHTML += "<div>Audio object has been initialized</div>";
-                    // console.log(response); // this contains the list of notes that were loaded.
+                    // response => cached, error, loaded を含むjson
+                    console.log(response); // this contains the list of notes that were loaded.
                     // midiBuffer.prime actually builds the output buffer.
+                    // buildするだけ。必要な作業はこれからしないといけない。
                     return midiBuffer.prime();
                 }).then(function () {
-                    //statusDiv.innerHTML += "<div>Audio object has been primed</div>";
                     // At this point, everything slow has happened. midiBuffer.start will return very quickly and will start playing very quickly without lag.
+                    // start audio
                     midiBuffer.start();
-                    //statusDiv.innerHTML += "<div>Audio started</div>";
                     return Promise.resolve();
                 }).catch(function (error) {
                     if (error.status === "NotSupported") {
@@ -75,21 +87,24 @@ function load() {
                         console.warn("synth error", error);
                 });
             });
-        } else {
-            var audioError = document.querySelector(".audio-error");
-            audioError.setAttribute("style", "");
         }
     });
 
-    stopAudioButton.addEventListener("click", function() {
+    stopAudioButton.addEventListener("click", function () {
+        mediaRecorder.stop();
+        mediaRecorder.ondataavailable = function (e) {
+            document.getElementById('player').src = URL.createObjectURL(e.data);
+        }
+        localstream.getTracks().forEach(track => track.stop());
         timingCallbacks.stop();
+        recordingDiv.setAttribute("style", "display:none;");
         startAudioButton.setAttribute("style", "");
         stopAudioButton.setAttribute("style", "display:none;");
         if (midiBuffer)
             midiBuffer.stop();
     });
 
-    
+
 
     var lastEls = [];
     function colorElements(els) {
@@ -109,7 +124,7 @@ function load() {
     }
 
     function eventCallback(ev) {
-        if(ev)
+        if (ev)
             colorElements(ev.elements);
     }
 
