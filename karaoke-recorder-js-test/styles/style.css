@@ -1,0 +1,18 @@
+main {
+			max-width: 770px;
+			margin: 0 auto;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+@media (prefers-color-scheme: dark) {
+    .status {
+        background-color: #000000;
+    }
+}
+.highlight {
+    stroke: red;
+    fill: red;
+}
