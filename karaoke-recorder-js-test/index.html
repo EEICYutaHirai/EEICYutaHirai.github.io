@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ふるさとの歌唱</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <script src="./scripts/abcjs-basic-min.js" type="text/javascript"></script>
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+    <script src="./scripts/hurusato.js" type="text/javascript"></script>
+</head>
+
+<body onload="load()">
+    <main>
+        <header>
+            <h1 style="text-align:center;">歌唱録音</h1>
+        </header>
+        <div class="container">
+            <div id="paper"></div>
+            <p class="explanation">下のスタートボタンを押すと、歌が流れます。それに合わせて歌唱を行ってください。</p>
+            <div class="row">
+                <div>
+                    <button id="activate-audio" 　style="display:none;">スタート</button>
+                    <button id="stop-audio" style="display:none;">停止</button>
+                    <div class='audio-error' style="display:none;">Audio is not supported in this browser.</div>
+                    <div id='recording' style="display:none;">録音中</div>
+                    <a href="" download id="download-link" style="display:none;">download</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <ol id="recordingsList"></ol>
+</body>
+
+</html>
