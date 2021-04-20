@@ -1,7 +1,10 @@
+// import abcjs from "abcjs"
+
 const hurusato = "T: ふるさと\n" +
     "M: 3/4\n" +
     "K: G\n" +
-    "L: 1/4\n" +
+    "L: 1/8\n" +
+    "Q: 1/4=80\n" +
     "d2 d2 d2|G3 A B2| c2 c2 A2| G4 z2\n" +
     "G2 G2 G2|A3 B A2|B2 B2 c2|d4 z2|\n" +
     "w:う さ ぎ| お い し | か の や|ま\n" +
@@ -11,6 +14,8 @@ const hurusato = "T: ふるさと\n" +
     "w: ゆ ー め は|い ー ま も|め ー ぐ ー |り ー て\n" +
     "d2 d2 d2|G3 A B2| c2 c2 A2| G4 z2\n" +
     "w: わ す れ|が た き|ふ る さ|と";
+
+let hurusato_music = "";
 
 // for video recording
 let width = 320    // We will scale the photo width to this
@@ -26,9 +31,13 @@ let record_data = []
 let input;
 
 function load() {
+    console.log(hurusato);
     // show SVG image on "paper"
     var visualObj = ABCJS.renderAbc("paper", hurusato, {
-        responsive: "resize"
+        responsive: "resize",
+        clickListener: ({ midiPitches }) => {
+            console.log("midiPitches", midiPitches);
+        }
     })[0];
 
 
@@ -61,11 +70,12 @@ function load() {
     var timingCallbacks = new ABCJS.TimingCallbacks(visualObj, {
         eventCallback: eventCallback,
         beatCallback: function (beatNumber, totalBeats, totalTime) {
-            console.log(beatNumber + ' ' + totalBeats);
+            console.log(beatNumber + ' ' + totalBeats + ' ' + totalTime);
             if (beatNumber == totalBeats) {
                 description.setAttribute('style', 'display:none;');
                 recorder.stop();
                 downloadbutton.setAttribute('style', '');
+                console.log(hurusato_music);
             }
         }
     });
@@ -234,8 +244,14 @@ function load() {
     }
 
     function eventCallback(ev) {
-        if (ev)
+
+        if (ev) {
+            console.log(ev);
             colorElements(ev.elements);
+            console.log(hurusato[ev.startChar]);
+            hurusato_music += hurusato.slice(ev.startChar, ev.endChar).replace(/[0-9]/g, "").replace(/\s/g, "").replace(/\(/g, "").replace(/\)/g, "")
+                + ", " + ev.milliseconds + "\n";
+        }
     }
 
     function videoStart() {

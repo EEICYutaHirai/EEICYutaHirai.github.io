@@ -39,11 +39,12 @@
             <p class="explanation">下のスタートボタンを押すと、歌が流れます。それに合わせて歌唱を行ってください。</p>
             <div class="row">
                 <div>
-                    <button class="activate-audio">スタート</button>
+                    <button class="activate-audio"　style="display:none;">スタート</button>
                     <button class="stop-audio" style="display:none;">停止</button>
                     <div class='audio-error' style="display:none;">Audio is not supported in this browser.</div>
                     <div class='recording' style="display:none;">録音中</div>
                     <div><audio id="player" controls></audio></div>
+                    <a href="" download id="download-link" style="display:none;">download</a>
                 </div>
             </div>
         </div>

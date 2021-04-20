@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+    <script src="./scripts/app.js" type="text/javascript"></script>
+</head>
+
+<body onload="load()">
+    <h1>オーラルディアドコキネシス試験</h1>
+    <p>
+        口腔機能を評価するために、オーラルディアドコキネシス試験を実施します。
+        「パ」「タ」「カ」「ラ」を5秒間の間にできる限りたくさん
+        発音していただきます。
+        以下の手順に従って実験を開始してください。
+    </p>
+    <ol>
+        <li>まずスタートボタンを押してください。ブラウザからマイクの使用許可を求められた場合には、使用を許可してください。</li>
+        <li>スタートボタンを押すと、5秒間のカウントダウンが始まります。</li>
+        <li>カウントダウンが0になると、5秒間の録音が開始されます。できる限りたくさん指定された語を発音してください。</li>
+        <li>5秒間たつと録音が終了し、録音した音声を保存するボタンが現れますので、保存してください。</li>
+    </ol>
+
+    <div>
+        <h2>「パ」の発音</h2>
+        <p>
+            以下の録音ボタンを押したら、できる限りたくさん「パ」を発音してください。
+        </p>
+        <button id="pa-button">
+            スタート
+        </button>
+        <p id="pa-description">
+        </p>
+        <ol id="pa-result"></ol>
+    </div>
+    <div>
+        <h2>「タ」の発音</h2>
+        <p>
+            以下の録音ボタンを押したら、できる限りたくさん「タ」を発音してください。
+        </p>
+        <button id="ta-button">
+            スタート
+        </button>
+        <p id="ta-description">
+        </p>
+        <ol id="ta-result"></ol>
+    </div>
+    <div>
+        <h2>「カ」の発音</h2>
+        <p>
+            以下の録音ボタンを押したら、できる限りたくさん「カ」を発音してください。
+        </p>
+        <button id="ka-button">
+            スタート
+        </button>
+        <p id="ka-description">
+        </p>
+        <ol id="ka-result"></ol>
+    </div>
+    <div>
+        <h2>「ラ」の発音</h2>
+        <p>
+            以下の録音ボタンを押したら、できる限りたくさん「ラ」を発音してください。
+        </p>
+        <button id="ra-button">
+            スタート
+        </button>
+        <p id="ra-description">
+        </p>
+        <ol id="ra-result"></ol>
+    </div>
+</body>
+
+</html>

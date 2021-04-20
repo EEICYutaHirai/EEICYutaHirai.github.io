@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+　　　　<title>recording</title>
+</head>
+<body>
+　　　　<div style="display:flex;">
+  　　　　<button id="recorder">Record</button>
+  　　　　<audio id="player" controls></audio>
+　　　　</div>
+</body>
+<script>
+if (!navigator.mediaDevices) {
+ alert("mediaDevices is unavailable");
+}
+
+var mediaRecorder = null;
+var localstream;
+
+// 録音開始
+rec_start = function(){
+  navigator.mediaDevices.getUserMedia({audio:true})
+    .then(function(stream) {
+      localstream = stream;
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.start();
+    })
+    .catch(function(e){
+      console.log(e);
+    });
+}
+
+// 録音停止
+rec_stop = function(){
+  mediaRecorder.stop();
+  mediaRecorder.ondataavailable = function(e) {
+    document.getElementById('player').src = URL.createObjectURL(e.data);
+  }
+  localstream.getTracks().forEach(track => track.stop());
+}
+
+document.getElementById('recorder').onclick = function(){
+  // ボタンの色で録音開始、停止を切り替える
+  if (this.style.backgroundColor == ''){
+    rec_start();    // 開始
+    this.style.backgroundColor = '#c71585';
+  } else {
+    rec_stop();     // 停止
+    this.style.backgroundColor = '';
+  }
+}
+</script>
