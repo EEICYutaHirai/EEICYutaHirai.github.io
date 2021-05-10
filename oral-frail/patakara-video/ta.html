@@ -13,26 +13,35 @@
         「タ」の発音
     </h1>
     <p>
-        実験は以下の手順で行われます。
+        以下の手順で実験を行ってください．
     </p>
     <ol>
         <li>鼻より下の範囲の口が映るようにカメラの位置を調整してください。スマートフォンを立てかけるなどして実験中にカメラの位置がずれないようにしてください．</li>
         <li>スタートボタンを押すと、3秒間のカウントダウンが始まります．スタートボタンを押して，待機してください．</li>
-        <li>カウントダウンが0になると、5秒間の録画が開始されます。できる限りたくさん「パ」と発音してください。なお，本番で発音する語は「パ」「タ」「カ」「ラ」のいずれかです．</li>
-        <li>5秒間たつと録画が終了します。録画した音声を保存するボタンが現れますので、クリックして保存してください。</li>
-        <li>保存後、「本番に進む」をクリックしてください。</li>
+        <li>カウントダウンが0になると、5秒間の録画が開始されます。できる限りたくさん<strong>「タ」</strong>と発音してください。なお，本番で発音する語は「パ」「タ」「カ」「ラ」のいずれかです．</li>
+        <li>5秒間たつと録画が終了し，自動で次の実験ページに移動します．</li>
+
     </ol>
     <div class="camera">
         <video id="video" muted>Video stream not available.</video>
     </div><br>
     <button id="startbutton">スタート</button>
-    <p id="description" style='display:none;'></p><button id="stopbutton" style="display: none;">stop!!</button><button
-        id="download" style="display:none;">動画をダウンロードする</button><br>
-    <div>
+    <p id="description" style='display:none;'></p>
+    <button id="upload" style="display:none;">動画をアップロードして次に進む</button><br>
+    <!-- <div>
         <video id="test"></video>
-    </div>
-    <a href="./ka.html" id="next-page" style="display:none">次に進む</a>
+    </div> -->
+    <a href="./ta.html" id="next-page" style="display:none">次に進む</a>
+    <p id="alert" style="display:none;" color="red">エラーが発生しました．管理者に問い合わせてください．</p>
+
 </body>
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
+
+<script>
+
+</script>
+
 <script>
     let width = 320    // We will scale the photo width to this
     let height = 0     // This will be computed based on the input stream
@@ -47,18 +56,13 @@
     let recorder = null
     let record_data = []
 
-    /**
-     * ユーザーのデバイスによるカメラ表示を開始し、
-     * 各ボタンの挙動を設定する
-     *
-     */
     function startup() {
         video = document.getElementById('video')
         canvas = document.getElementById('canvas')
         photo = document.getElementById('photo')
         startbutton = document.getElementById('startbutton')
         stopbutton = document.getElementById('stopbutton')
-        downloadbutton = document.getElementById('download')
+        uploadbutton = document.getElementById('upload')
 
         videoStart()
 
@@ -94,10 +98,12 @@
                     description.setAttribute('style', 'color:red;')
 
                     setTimeout(function () {
+                        uploadVideo();
                         description.setAttribute('style', 'display:none;');
                         recorder.stop();
-                        downloadbutton.setAttribute('style', '');
+                        uploadbutton.setAttribute('style', '');
                         document.getElementById('next-page').setAttribute('style', 'display:none;');
+
                     }, 5000);
 
                     clearInterval(x);
@@ -109,22 +115,46 @@
 
         }, false);
 
-        stopbutton.addEventListener('click', function (ev) {
-            recorder.stop()
-        })
+        // stopbutton.addEventListener('click', function (ev) {
+        //     recorder.stop()
+        // })
 
-        downloadbutton.addEventListener('click', function (ev) {
-            console.log(record_data)
-            var blob = new Blob(record_data, { type: 'video/webm' })
-            var url = window.URL.createObjectURL(blob)
-            var a = document.createElement('a')
-            document.body.appendChild(a)
-            a.style = 'display:none'
-            a.href = url;
-            a.download = 'test.webm'
-            a.click()
-            window.URL.revokeObjectURL(url)
-        })
+        // uploadbutton.addEventListener('click', function (ev) {
+        //     console.log(record_data)
+        //     var blob = new Blob(record_data, { type: 'video/webm' })
+        //     var url = window.URL.createObjectURL(blob)
+        //     var a = document.createElement('a')
+        //     document.body.appendChild(a)
+        //     a.style = 'display:none'
+        //     a.href = url;
+        //     a.download = 'test.webm'
+        //     a.click()
+        //     window.URL.revokeObjectURL(url)
+        // })
+    }
+
+    function uploadVideo() {
+        var firebaseConfig = {
+            apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
+            authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
+            projectId: "oralfrailexperiment-19fa7",
+            storageBucket: "oralfrailexperiment-19fa7.appspot.com",
+            messagingSenderId: "550131966506",
+            appId: "1:550131966506:web:31e8df4ba565a295ded953"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        storageRef = firebase.storage().ref();
+
+        experimentId = window.location.search.slice(4);
+        var uploadRef = storageRef.child(experimentId + '/pa.webm');
+        var blob = new Blob(record_data, { type: 'video/webm' })
+        uploadRef.put(blob).then(function (snapshot) {
+            location.href = "./ka.html?id=" + String(experimentId);
+        }).catch(function (e) {
+            document.getElementById('alert').setAttribute('style', '');
+            console.log(e);
+        });
     }
 
     /**
@@ -139,13 +169,13 @@
                 video.play()
                 recorder = new MediaRecorder(stream)
                 recorder.ondataavailable = function (e) {
-                    var testvideo = document.getElementById('test')
-                    testvideo.setAttribute('controls', '')
-                    testvideo.setAttribute('width', width)
-                    testvideo.setAttribute('height', height)
+                    // var testvideo = document.getElementById('test')
+                    // testvideo.setAttribute('controls', '')
+                    // testvideo.setAttribute('width', width)
+                    // testvideo.setAttribute('height', height)
                     var outputdata = window.URL.createObjectURL(e.data)
                     record_data.push(e.data)
-                    testvideo.src = outputdata
+                    // testvideo.src = outputdata
                 }
             })
             .catch(function (err) {
@@ -158,13 +188,13 @@
             .then(function (stream) {
                 recorder = new MediaRecorder(stream)
                 recorder.ondataavailable = function (e) {
-                    var testvideo = document.getElementById('test')
-                    testvideo.setAttribute('controls', '')
-                    testvideo.setAttribute('width', width)
-                    testvideo.setAttribute('height', height)
+                    // var testvideo = document.getElementById('test')
+                    // testvideo.setAttribute('controls', '')
+                    // testvideo.setAttribute('width', width)
+                    // testvideo.setAttribute('height', height)
                     var outputdata = window.URL.createObjectURL(e.data)
                     record_data.push(e.data)
-                    testvideo.src = outputdata
+                    // testvideo.src = outputdata
                 }
             })
     }
