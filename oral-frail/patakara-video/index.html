@@ -14,9 +14,19 @@
         以下の実験では，「パ」「タ」「カ」「ラ」を5秒間の間にできる限りたくさん
         発音していただきます．本番の前に，次のページで練習をして手順を確認してください．
         ブラウザからマイクとカメラの使用を求められた時には，許可をしてください．
+        まず，アンケートの最後に提示された番号を入力してください．
         <br>
-        <a href="./test.html">>練習に進む</a>
+
     </p>
+    <label for="">番号:<input type="text" id="inputId"></label>
+    <button id="goNext">実験に進む</button>
 </body>
+<script>
+    var goNext = document.getElementById("goNext");
+    goNext.onclick = function (ev) {
+        var experimentId = inputId.value;
+        location.href = "./pa.html?id=" + String(experimentId);
+    };
+</script>
 
 </html>
