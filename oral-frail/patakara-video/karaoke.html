@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>モバイル端末による口腔機能の評価・訓練の実現に向けた口腔機能の調査</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <script src="./scripts/abcjs-basic-min.js" type="text/javascript"></script>
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
+    <script>
+        function uploadVideo() {
+            // console.log(record_data)
+            // var blob = new Blob(record_data, { type: 'video/webm' })
+            // var url = window.URL.createObjectURL(blob)
+            // var a = document.createElement('a')
+            // document.body.appendChild(a)
+            // a.style = 'display:none'
+            // a.href = url;
+            // a.download = 'test.webm'
+            // a.click()
+            // window.URL.revokeObjectURL(url)
+            var firebaseConfig = {
+                apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
+                authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
+                projectId: "oralfrailexperiment-19fa7",
+                storageBucket: "oralfrailexperiment-19fa7.appspot.com",
+                messagingSenderId: "550131966506",
+                appId: "1:550131966506:web:31e8df4ba565a295ded953"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            storageRef = firebase.storage().ref();
+
+            experimentId = window.location.search.slice(4);
+            var uploadRef = storageRef.child(experimentId + '/karaoke.webm');
+            var blob = new Blob(record_data, { type: 'video/webm' })
+            uploadRef.put(blob).then(function (snapshot) {
+                console.log("uploaded");
+                location.href = "./end.html?id=" + String(experimentId);
+            }).catch(function (e) {
+                document.getElementById('alert').setAttribute('style', '');
+                console.log(e);
+            });
+        }
+    </script>
+    <script src="./scripts/hurusato.js" type="text/javascript"></script>
+</head>
+
+<body onload="load()">
+    <main>
+        <header>
+            <h1 style="text-align:center;">ふるさとの歌唱(本番)</h1>
+        </header>
+
+        <p>
+            これは<strong>本番</strong>です．以下の手順を実行してください．
+        </p>
+        <ol>
+            <li>下の部分でカメラにあなたの顔が表示されていると思います．鼻から下の範囲が映るようにスマートフォンの位置を調整してください．</li>
+            <li>スタートボタンを押すと3秒間のカウントダウンが始まります。カウントダウンが0になると、演奏が始まりますので、演奏に合わせて歌詞を歌ってください。</li>
+            <li>歌が終わると次のページに移動しますので，指示に従って実験を行ってください．</li>
+        </ol>
+
+        <div class="container">
+            <div id="paper"></div>
+            <div class="row">
+                <div>
+                    <!-- <button id="activate-audio" 　style="display:none;">スタート</button>
+                    <button id="stop-audio" style="display:none;">停止</button>
+                    <div class='audio-error' style="display:none;">Audio is not supported in this browser.</div>
+                    <div id='recording' style="display:none;">録音中</div>
+                    <a href="" download id="download-link" style="display:none;">download</a> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="camera">
+            <video id="video" muted>Video stream not available.</video>
+        </div><br>
+        <button id="startbutton">スタート</button>
+        <p id="description" style='display:none;'></p><button id="stopbutton"
+            style="display: none;">stop!!</button><button id="download" style="display:none;">動画をダウンロードする</button><br>
+        <div>
+            <video id="test"></video>
+        </div>
+    </main>
+    <ol id="recordingsList"></ol>
+</body>
+
+</html>

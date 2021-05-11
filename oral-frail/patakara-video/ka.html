@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./styles/patakara.css">
+    <title>モバイル端末による口腔機能の評価・訓練の実現に向けた口腔機能の調査</title>
 </head>
 
 <body>
@@ -13,12 +14,15 @@
         「カ」の発音
     </h1>
     <p>
-        以下の手順で実験を行ってください．
+        以下の実験では，5秒間の間にできる限り多く「カ」と発音していただきます．
+    </p>
+    <p>
+        以下の説明を読んでから，スタートボタンを押して実験を始めてください．
     </p>
     <ol>
         <li>鼻より下の範囲の口が映るようにカメラの位置を調整してください。スマートフォンを立てかけるなどして実験中にカメラの位置がずれないようにしてください．</li>
-        <li>スタートボタンを押すと、3秒間のカウントダウンが始まります．スタートボタンを押して，待機してください．</li>
-        <li>カウントダウンが0になると、5秒間の録画が開始されます。できる限りたくさん<strong>「カ」</strong>と発音してください。なお，本番で発音する語は「パ」「タ」「カ」「ラ」のいずれかです．</li>
+        <li>スタートボタンを押すと，3秒間のカウントダウンが始まります．スタートボタンを押して，待機してください．</li>
+        <li>カウントダウンが0になると，5秒間の録画が開始されます．できる限りたくさん<strong>「カ」</strong>と発音してください．</li>
         <li>5秒間たつと録画が終了し，自動で次の実験ページに移動します．</li>
     </ol>
     <div class="camera">
@@ -31,107 +35,14 @@
         <video id="test"></video>
     </div> -->
     <a href="./ta.html" id="next-page" style="display:none">次に進む</a>
-    <p id="alert" style="display:none;" color="red">エラーが発生しました．管理者に問い合わせてください．</p>
+    <p id="error-upload" style="display:none;">アップロードに失敗しました．責任者にお問い合わせください．</p>
+    <p id="no-permission" style="display:none;">マイクとカメラの使用が許可されなかったようです．リロードして再度お試しください．</p>
 
 </body>
 <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
 
 <script>
-
-</script>
-
-<script>
-    let width = 320    // We will scale the photo width to this
-    let height = 0     // This will be computed based on the input stream
-
-    let streaming = false
-
-    let video = null
-    let canvas = null
-    let photo = null
-    let startbutton = null
-    let constrains = { video: true, audio: true }
-    let recorder = null
-    let record_data = []
-
-    function startup() {
-        video = document.getElementById('video')
-        canvas = document.getElementById('canvas')
-        photo = document.getElementById('photo')
-        startbutton = document.getElementById('startbutton')
-        stopbutton = document.getElementById('stopbutton')
-        uploadbutton = document.getElementById('upload')
-
-        videoStart()
-
-        //メディアが再生できるようになったとき
-        video.addEventListener('canplay', function (ev) {
-            if (!streaming) {
-                height = video.videoHeight / (video.videoWidth / width)
-
-                video.setAttribute('width', width)
-                video.setAttribute('height', height)
-                streaming = true
-            }
-        }, false)
-
-        //startRecorder()
-
-        startbutton.addEventListener('click', function (ev) {
-            startbutton.setAttribute('style', 'display:none');
-            description.setAttribute('style', '');
-
-            // countdown
-            let count = 3;
-            let start = new Date();
-            description.innerHTML = "実験開始まで" + count + "秒前";
-            let x = setInterval(function () {
-                let now = new Date();
-                description.innerHTML = "実験開始まで" + Math.ceil((count - (now - start) / 1000)) + "秒前";
-                if ((count - (now - start) / 1000) < 0) {
-                    recorder.start();
-                    ev.preventDefault();
-
-                    description.innerHTML = "録画中";
-                    description.setAttribute('style', 'color:red;')
-
-                    setTimeout(function () {
-                        uploadVideo();
-                        description.setAttribute('style', 'display:none;');
-                        recorder.stop();
-                        uploadbutton.setAttribute('style', '');
-                        document.getElementById('next-page').setAttribute('style', 'display:none;');
-
-                    }, 5000);
-
-                    clearInterval(x);
-                }
-            }, 100);
-
-
-
-
-        }, false);
-
-        // stopbutton.addEventListener('click', function (ev) {
-        //     recorder.stop()
-        // })
-
-        // uploadbutton.addEventListener('click', function (ev) {
-        //     console.log(record_data)
-        //     var blob = new Blob(record_data, { type: 'video/webm' })
-        //     var url = window.URL.createObjectURL(blob)
-        //     var a = document.createElement('a')
-        //     document.body.appendChild(a)
-        //     a.style = 'display:none'
-        //     a.href = url;
-        //     a.download = 'test.webm'
-        //     a.click()
-        //     window.URL.revokeObjectURL(url)
-        // })
-    }
-
     function uploadVideo() {
         var firebaseConfig = {
             apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
@@ -146,59 +57,16 @@
         storageRef = firebase.storage().ref();
 
         experimentId = window.location.search.slice(4);
-        var uploadRef = storageRef.child(experimentId + '/pa.webm');
+        var uploadRef = storageRef.child(experimentId + '/ra.webm');
         var blob = new Blob(record_data, { type: 'video/webm' })
         uploadRef.put(blob).then(function (snapshot) {
-            location.href = "./ra.html?id=" + String(experimentId);
+            location.href = "./ta.html?id=" + String(experimentId);
         }).catch(function (e) {
-            document.getElementById('alert').setAttribute('style', '');
+            document.getElementById("error-upload").setAttribute('style', 'color:red;');
             console.log(e);
         });
     }
-
-    /**
-     * カメラ操作を開始する
-     */
-    function videoStart() {
-        streaming = false
-        console.log(streaming)
-        navigator.mediaDevices.getUserMedia(constrains)
-            .then(function (stream) {
-                video.srcObject = stream
-                video.play()
-                recorder = new MediaRecorder(stream)
-                recorder.ondataavailable = function (e) {
-                    // var testvideo = document.getElementById('test')
-                    // testvideo.setAttribute('controls', '')
-                    // testvideo.setAttribute('width', width)
-                    // testvideo.setAttribute('height', height)
-                    var outputdata = window.URL.createObjectURL(e.data)
-                    record_data.push(e.data)
-                    // testvideo.src = outputdata
-                }
-            })
-            .catch(function (err) {
-                console.log("An error occured! " + err)
-            })
-    }
-
-    function startRecorder() {
-        navigator.mediaDevices.getUserMedia(constrains)
-            .then(function (stream) {
-                recorder = new MediaRecorder(stream)
-                recorder.ondataavailable = function (e) {
-                    // var testvideo = document.getElementById('test')
-                    // testvideo.setAttribute('controls', '')
-                    // testvideo.setAttribute('width', width)
-                    // testvideo.setAttribute('height', height)
-                    var outputdata = window.URL.createObjectURL(e.data)
-                    record_data.push(e.data)
-                    // testvideo.src = outputdata
-                }
-            })
-    }
-
-    startup()
 </script>
+<script src="./scripts/patakara.js"></script>
 
 </html>

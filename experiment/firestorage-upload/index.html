@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebaseへのアップロード</title>
+</head>
+
+<body>
+    <h1>Firebaseへのアップロード</h1>
+    <input type="file" id="btnUpload" value="アップロード">
+    <img src="" alt="" id="imageSample">
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
+
+<script>
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyC1H9FP81lGn2GE7-DqLCzhtw9nI3-qDPw",
+        authDomain: "myfirstproject-f9658.firebaseapp.com",
+        projectId: "myfirstproject-f9658",
+        storageBucket: "myfirstproject-f9658.appspot.com",
+        messagingSenderId: "471894566303",
+        appId: "1:471894566303:web:d3e96a0fde53469bbc89aa",
+        measurementId: "G-9605GVQM0D"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    storageRef = firebase.storage().ref();
+
+    var btnUploadChange = function (ev) {
+        var uploadRef = storageRef.child('upload.png');
+        const f = ev.target.files[0];
+        uploadRef.put(f).then(function (snapshot) {
+            console.log('uploaded');
+            uploadRef.getDownloadURL().then(function (url) {
+                document.getElementById('imageSample').src = url;
+            });
+        }).catch(function (e) {
+            console.log(e);
+        });
+    };
+
+    window.onload = function () {
+        document.getElementById('btnUpload').onchange = btnUploadChange;
+    }
+</script>
+
+</html>
