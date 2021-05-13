@@ -23,28 +23,28 @@
             // a.download = 'test.webm'
             // a.click()
             // window.URL.revokeObjectURL(url)
-            var firebaseConfig = {
-                apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
-                authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
-                projectId: "oralfrailexperiment-19fa7",
-                storageBucket: "oralfrailexperiment-19fa7.appspot.com",
-                messagingSenderId: "550131966506",
-                appId: "1:550131966506:web:31e8df4ba565a295ded953"
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            storageRef = firebase.storage().ref();
+            location.href = "./karaoke.html?id=" + String(experimentId);
+            // var firebaseConfig = {
+            //     apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
+            //     authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
+            //     projectId: "oralfrailexperiment-19fa7",
+            //     storageBucket: "oralfrailexperiment-19fa7.appspot.com",
+            //     messagingSenderId: "550131966506",
+            //     appId: "1:550131966506:web:31e8df4ba565a295ded953"
+            // };
+            // // Initialize Firebase
+            // firebase.initializeApp(firebaseConfig);
+            // storageRef = firebase.storage().ref();
 
-            experimentId = window.location.search.slice(4);
-            var uploadRef = storageRef.child(experimentId + '/karaoke.webm');
-            var blob = new Blob(record_data, { type: 'video/webm' })
-            uploadRef.put(blob).then(function (snapshot) {
-                console.log("uploaded");
-                location.href = "./end.html?id=" + String(experimentId);
-            }).catch(function (e) {
-                document.getElementById('alert').setAttribute('style', '');
-                console.log(e);
-            });
+            // experimentId = window.location.search.slice(4);
+            // var uploadRef = storageRef.child(experimentId + '/karaoke.webm');
+            // var blob = new Blob(record_data, { type: 'video/webm' })
+            // uploadRef.put(blob).then(function (snapshot) {
+            //     location.href = "./karaoke.html?id=" + String(experimentId);
+            // }).catch(function (e) {
+            //     document.getElementById('alert').setAttribute('style', '');
+            //     console.log(e);
+            // });
         }
     </script>
     <script src="./scripts/hurusato.js" type="text/javascript"></script>
@@ -57,12 +57,15 @@
         </header>
 
         <p>
-            これは<strong>本番</strong>です．以下の手順を実行してください．
+            この実験では，あなたに日本の童謡「ふるさと」を歌っていただきます．このページは<strong>本番</strong>です．以下の説明を読んでスタートボタンを押し，実験を開始してください．
         </p>
         <ol>
-            <li>下の部分でカメラにあなたの顔が表示されていると思います．鼻から下の範囲が映るようにスマートフォンの位置を調整してください．</li>
-            <li>スタートボタンを押すと3秒間のカウントダウンが始まります。カウントダウンが0になると、演奏が始まりますので、演奏に合わせて歌詞を歌ってください。</li>
-            <li>歌が終わると次のページに移動しますので，指示に従って実験を行ってください．</li>
+            <li>このページの一番下にカメラの映像が映し出されています．下の写真のように鼻と口がカメラに収まるようにカメラの位置を調整してください．目より上の部分を含める必要はありません．</li>
+            <img src="./images/below-nose.jpg" alt="below-nose">
+            <li>スマートフォンを固定して実験中にカメラが動かないようにしてください．</li>
+            <li>スタートボタンを押すと3秒間のカウントダウンが始まります．カウントダウンが0になると，演奏が始まりますので，演奏に合わせて歌詞を歌ってください．カラオケのように，下の楽譜の歌うべき場所が赤く表示されます．
+            </li>
+            <li>歌が終わると自動的にページが移動しますので，指示に従って次の実験を行ってください．</li>
         </ol>
 
         <div class="container">
