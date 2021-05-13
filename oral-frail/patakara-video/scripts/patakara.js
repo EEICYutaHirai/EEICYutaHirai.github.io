@@ -54,10 +54,10 @@ function startup() {
 
                 setTimeout(function () {
                     uploadVideo();
-                    description.setAttribute('style', 'display:none;');
+                    //description.setAttribute('style', 'display:none;');
                     recorder.stop();
-                    uploadbutton.setAttribute('style', '');
-                    document.getElementById('next-page').setAttribute('style', 'display:none;');
+                    //uploadbutton.setAttribute('style', '');
+                    //document.getElementById('next-page').setAttribute('style', 'display:none;');
 
                 }, 5000);
 
@@ -113,4 +113,4 @@ function startRecorder() {
         })
 }
 
-// startup()
+startup()

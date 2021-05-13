@@ -6,42 +6,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/patakara.css">
+    <link rel="stylesheet" href="./styles/style.css">
     <title>モバイル端末による口腔機能の評価・訓練の実現に向けた口腔機能の調査</title>
 </head>
 
 <body>
-    <h1>
-        「タ」の発音
-    </h1>
-    <p>
-        以下の実験では，5秒間の間にできる限り多く「タ」と発音していただきます．
-    </p>
-    <p>
-        以下の説明を読んでから，スタートボタンを押して実験を始めてください．
-    </p>
-    <ol>
-        <li>鼻より下の範囲の口が映るようにカメラの位置を調整してください。スマートフォンを立てかけるなどして実験中にカメラの位置がずれないようにしてください．</li>
-        <li>スタートボタンを押すと，3秒間のカウントダウンが始まります．スタートボタンを押して，待機してください．</li>
-        <li>カウントダウンが0になると，5秒間の録画が開始されます．できる限りたくさん<strong>「タ」</strong>と発音してください．</li>
-        <li>5秒間たつと録画が終了し，自動で次の実験ページに移動します．</li>
-    </ol>
-    <div class="camera">
-        <video id="video" muted>Video stream not available.</video>
-    </div><br>
-    <button id="startbutton">スタート</button>
-    <p id="description" style='display:none;'></p>
-    <button id="upload" style="display:none;">動画をアップロードして次に進む</button><br>
-    <!-- <div>
+    <main>
+        <h1>
+            「<span class="patakara-word"></span>」の発音
+        </h1>
+        <p>
+            この実験では，5秒間の間にできる限り多く<strong>「<span class="patakara-word"></span>」</strong>と発音していただきます．
+        </p>
+        <p>
+            以下の説明を読み，スタートボタンを押して実験を始めてください．
+        </p>
+        <p id="descriptionExplainingSame" style="display: none;">
+            <strong>「<span class="patakara-word"></span>」と発音していただくこと以外は前の実験と同じです．</strong>
+        </p>
+
+        <ol>
+            <li>このページの一番下にカメラの映像が映し出されています．下の写真のように鼻と口がカメラに収まるようにカメラの位置を調整してください．目より上の部分を含める必要はありません．</li>
+            <img src="./images/below-nose.jpg" alt="below-nose">
+            <li>スマートフォンを立てかけるなどして実験中にカメラが動かないようにしてください．</li>
+            <li>スタートボタンを押すと，3秒間のカウントダウンが始まります．</li>
+            <li>カウントダウンが0になると，5秒間の録画が開始されます．できる限りたくさん<strong>「<span class="patakara-word"></span>」</strong>と発音してください．
+            </li>
+            <li>5秒間たつと録画が終了し，自動で次の実験ページに移動します．</li>
+        </ol>
+        <div class="camera">
+            <video id="video" muted>Video stream not available.</video>
+        </div><br>
+        <button id="startbutton">スタート</button>
+        <p id="description" style='display:none;'></p>
+        <button id="upload" style="display:none;">動画をアップロードして次に進む</button><br>
+        <!-- <div>
         <video id="test"></video>
     </div> -->
-    <a href="./ta.html" id="next-page" style="display:none">次に進む</a>
-    <p id="error-upload" style="display:none;">アップロードに失敗しました．責任者にお問い合わせください．</p>
-    <p id="no-permission" style="display:none;">マイクとカメラの使用が許可されなかったようです．リロードして再度お試しください．</p>
+        <a href="./ta.html" id="next-page" style="display:none">次に進む</a>
+        <p id="error-upload" style="display:none;">アップロードに失敗しました．責任者にお問い合わせください．</p>
+        <p id="no-permission" style="display:none;">マイクとカメラの使用が許可されなかったようです．リロードして再度お試しください．</p>
 
+    </main>
 </body>
 <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
+<script>
+    const current_word = window.location.href.split('/').pop().split('.')[0];
+    if (current_word != "pa") {
+        document.getElementById("descriptionExplainingSame").setAttribute("style", "");
+    }
 
+    let patakara_words = document.getElementsByClassName("patakara-word");
+    console.log(patakara_words);
+    console.log(patakara_words[0]);
+    for (let i = 0; i < patakara_words.length; i++) {
+        console.log(patakara_words[i]);
+
+        switch (current_word) {
+            case "pa": patakara_words[i].innerHTML = "パ"; break;
+            case "ta": patakara_words[i].innerHTML = "タ"; break;
+            case "ka": patakara_words[i].innerHTML = "カ"; break;
+            case "ra": patakara_words[i].innerHTML = "ラ"; break;
+            default: next_word = "karaoke-description"; break;
+        }
+    }
+
+    let next_word = "";
+    switch (current_word) {
+        case "pa": next_word = "ta"; break;
+        case "ta": next_word = "ka"; break;
+        case "ka": next_word = "ra"; break;
+        default: next_word = "karaoke-description"; break;
+    }
+
+</script>
 <script>
     function uploadVideo() {
         var firebaseConfig = {
@@ -57,10 +96,10 @@
         storageRef = firebase.storage().ref();
 
         experimentId = window.location.search.slice(4);
-        var uploadRef = storageRef.child(experimentId + '/ka.webm');
+        var uploadRef = storageRef.child(experimentId + "/" + current_word + '.webm');
         var blob = new Blob(record_data, { type: 'video/webm' })
         uploadRef.put(blob).then(function (snapshot) {
-            location.href = "./ta.html?id=" + String(experimentId);
+            location.href = "./" + next_word + ".html?id=" + String(experimentId);
         }).catch(function (e) {
             document.getElementById("error-upload").setAttribute('style', 'color:red;');
             console.log(e);
@@ -68,5 +107,7 @@
     }
 </script>
 <script src="./scripts/patakara.js"></script>
+
+
 
 </html>
