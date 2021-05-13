@@ -26,9 +26,9 @@ function startup() {
         if (!streaming) {
             height = video.videoHeight / (video.videoWidth / width)
 
-            video.setAttribute('width', width)
-            video.setAttribute('height', height)
-            streaming = true
+            video.setAttribute('width', width);
+            video.setAttribute('height', height);
+            streaming = true;
         }
     }, false)
 
@@ -69,31 +69,13 @@ function startup() {
 
 
     }, false);
-
-    // stopbutton.addEventListener('click', function (ev) {
-    //     recorder.stop()
-    // })
-
-    // uploadbutton.addEventListener('click', function (ev) {
-    //     console.log(record_data)
-    //     var blob = new Blob(record_data, { type: 'video/webm' })
-    //     var url = window.URL.createObjectURL(blob)
-    //     var a = document.createElement('a')
-    //     document.body.appendChild(a)
-    //     a.style = 'display:none'
-    //     a.href = url;
-    //     a.download = 'test.webm'
-    //     a.click()
-    //     window.URL.revokeObjectURL(url)
-    // })
 }
 
 /**
  * カメラ操作を開始する
  */
 function videoStart() {
-    streaming = false
-    console.log(streaming)
+    streaming = false;
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
             video.srcObject = stream
@@ -131,4 +113,4 @@ function startRecorder() {
         })
 }
 
-startup()
+// startup()
