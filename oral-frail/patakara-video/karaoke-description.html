@@ -13,7 +13,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
     <script>
         function uploadVideo() {
-            // console.log(record_data)
             // var blob = new Blob(record_data, { type: 'video/webm' })
             // var url = window.URL.createObjectURL(blob)
             // var a = document.createElement('a')
@@ -23,6 +22,7 @@
             // a.download = 'test.webm'
             // a.click()
             // window.URL.revokeObjectURL(url)
+            experimentId = window.location.search.slice(4);
             location.href = "./karaoke.html?id=" + String(experimentId);
             // var firebaseConfig = {
             //     apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
@@ -36,7 +36,6 @@
             // firebase.initializeApp(firebaseConfig);
             // storageRef = firebase.storage().ref();
 
-            // experimentId = window.location.search.slice(4);
             // var uploadRef = storageRef.child(experimentId + '/karaoke.webm');
             // var blob = new Blob(record_data, { type: 'video/webm' })
             // uploadRef.put(blob).then(function (snapshot) {
