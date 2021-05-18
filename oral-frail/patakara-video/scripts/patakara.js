@@ -99,8 +99,8 @@ function videoStart() {
     streaming = false;
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
-            video.srcObject = stream
-            playVideo();
+            // video.srcObject = stream
+            // playVideo();
             recorder = new MediaRecorder(stream)
             recorder.ondataavailable = function (e) {
                 // var testvideo = document.getElementById('test')
