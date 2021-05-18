@@ -43,7 +43,7 @@ function startup() {
         }
     }, false)
 
-    startRecorder()
+    // startRecorder()
 
     startbutton.addEventListener('click', function (ev) {
         startbutton.setAttribute('style', 'display:none');
@@ -88,17 +88,16 @@ function startup() {
 
 function videoStart() {
     streaming = false
-    console.log(streaming)
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
             video.srcObject = stream
             // video.play()
             recorder = new MediaRecorder(stream)
             recorder.ondataavailable = function (e) {
-                var testvideo = document.getElementById('test')
-                testvideo.setAttribute('controls', '')
-                testvideo.setAttribute('width', width)
-                testvideo.setAttribute('height', height)
+                // var testvideo = document.getElementById('test')
+                // testvideo.setAttribute('controls', '')
+                // testvideo.setAttribute('width', width)
+                // testvideo.setAttribute('height', height)
                 var outputdata = window.URL.createObjectURL(e.data)
                 record_data.push(e.data)
                 testvideo.src = outputdata
