@@ -96,7 +96,7 @@
         storageRef = firebase.storage().ref();
 
         experimentId = window.location.search.slice(4);
-        var uploadRef = storageRef.child(experimentId + "/" + current_word + '.webm');
+        var uploadRef = storageRef.child(experimentId + "/" + current_word + '-' + String(Date.now()) + '.webm');
         var blob = new Blob(record_data, { type: 'video/webm' })
         uploadRef.put(blob).then(function (snapshot) {
             location.href = "./" + next_word + ".html?id=" + String(experimentId);
