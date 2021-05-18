@@ -84,6 +84,14 @@ function startup() {
     }, false);
 }
 
+async function playVideo() {
+    try {
+        await video.play();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 /**
  * カメラ操作を開始する
  */
@@ -91,13 +99,8 @@ function videoStart() {
     streaming = false;
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
-            video = document.getElementById('video')
             video.srcObject = stream
-            try {
-                await video.play();
-            } catch (err) {
-                console.log(err);
-            }
+            playVideo();
             recorder = new MediaRecorder(stream)
             recorder.ondataavailable = function (e) {
                 // var testvideo = document.getElementById('test')
