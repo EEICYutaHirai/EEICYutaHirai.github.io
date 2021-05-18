@@ -35,7 +35,7 @@
             <li>5秒間たつと録画が終了し，自動で次の実験ページに移動します．</li>
         </ol>
         <div class="camera">
-            <video id="video" muted>Video stream not available.</video>
+            <video id="video" muted autoplay playsinline>Video stream not available.</video>
         </div><br>
         <button id="startbutton">スタート</button>
         <p id="description" style='display:none;'></p>
@@ -77,7 +77,7 @@
         case "pa": next_word = "ta"; break;
         case "ta": next_word = "ka"; break;
         case "ka": next_word = "ra"; break;
-        default: next_word = "end"; break;
+        default: next_word = "karaoke-description"; break;
     }
 
 </script>
