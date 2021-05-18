@@ -81,26 +81,27 @@ function startup() {
  */
 
 function videoStart() {
-    streaming = false;
+    streaming = false
+    console.log(streaming)
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
             video.srcObject = stream
-            // requestAnimationFrame(draw);
-            // playVideo();
+            // video.play()
             recorder = new MediaRecorder(stream)
             recorder.ondataavailable = function (e) {
-                // var testvideo = document.getElementById('test')
-                // testvideo.setAttribute('controls', '')
-                // testvideo.setAttribute('width', width)
-                // testvideo.setAttribute('height', height)
+                var testvideo = document.getElementById('test')
+                testvideo.setAttribute('controls', '')
+                testvideo.setAttribute('width', width)
+                testvideo.setAttribute('height', height)
                 var outputdata = window.URL.createObjectURL(e.data)
                 record_data.push(e.data)
-                // testvideo.src = outputdata
+                testvideo.src = outputdata
             }
+            input = audioContext.createMediaStreamSource(stream);
+            gumStream = stream;
         })
         .catch(function (err) {
             console.log("An error occured! " + err)
-            document.getElementById("no-permission").setAttribute("style", "color:red;");
         })
 }
 
