@@ -30,6 +30,8 @@ function startup() {
     stopbutton = document.getElementById('stopbutton')
     uploadbutton = document.getElementById('upload')
 
+    navigator.mediaDevices.getUserMedia(constrains);
+
     videoStart()
 
     //メディアが再生できるようになったとき
