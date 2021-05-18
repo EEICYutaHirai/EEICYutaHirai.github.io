@@ -94,10 +94,9 @@ function load() {
         startAudioButton.setAttribute("style", "display:none;");
 
         while (recorder == null) {
-
         }
 
-        description.innerHTML = "録音中";
+        description.innerHTML = "録画中";
         description.setAttribute('style', 'color:red');
         playMusic();
         recorder.start();
