@@ -246,7 +246,7 @@ function load() {
         navigator.mediaDevices.getUserMedia(constrains)
             .then(function (stream) {
                 video.srcObject = stream
-                video.play()
+                // video.play()
                 recorder = new MediaRecorder(stream)
                 recorder.ondataavailable = function (e) {
                     var testvideo = document.getElementById('test')
