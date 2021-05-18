@@ -45,7 +45,7 @@ function startup() {
         }
     }, false)
 
-    //startRecorder()
+    startRecorder()
 
     startbutton.addEventListener('click', function (ev) {
         startbutton.setAttribute('style', 'display:none');
@@ -95,11 +95,13 @@ async function playVideo() {
 /**
  * カメラ操作を開始する
  */
+
 function videoStart() {
     streaming = false;
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
-            // video.srcObject = stream
+            video.srcObject = stream
+            // requestAnimationFrame(draw);
             // playVideo();
             recorder = new MediaRecorder(stream)
             recorder.ondataavailable = function (e) {
