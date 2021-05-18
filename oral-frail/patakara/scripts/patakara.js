@@ -30,7 +30,7 @@ function startup() {
     stopbutton = document.getElementById('stopbutton')
     uploadbutton = document.getElementById('upload')
 
-    navigator.mediaDevices.getUserMedia(constrains);
+    // navigator.mediaDevices.getUserMedia(constrains);
 
     videoStart()
 
@@ -91,6 +91,7 @@ function videoStart() {
     streaming = false;
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
+            video = document.getElementById('video')
             video.srcObject = stream
             try {
                 await video.play();
