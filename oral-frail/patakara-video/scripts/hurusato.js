@@ -93,9 +93,6 @@ function load() {
     startAudioButton.addEventListener("click", function () {
         startAudioButton.setAttribute("style", "display:none;");
 
-        while (recorder == null) {
-        }
-
         description.innerHTML = "録画中";
         description.setAttribute('style', 'color:red');
         playMusic();
