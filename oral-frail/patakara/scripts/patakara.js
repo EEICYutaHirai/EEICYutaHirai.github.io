@@ -8,9 +8,10 @@ let canvas = null
 let photo = null
 let startbutton = null
 let constrains = {
+    audio: true,
     video: {
         facingMode: "user"
-    }, audio: true
+    }
 }
 let recorder = null
 let record_data = []
