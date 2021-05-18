@@ -16,6 +16,12 @@ let constrains = {
 let recorder = null
 let record_data = []
 
+window.AudioContext = window.AudioContext ||
+    window.webkitAudioContext ||
+    navigator.mozAudioContext ||
+    navigator.msAudioContext;
+let audioContext = new window.AudioContext();
+
 function startup() {
     video = document.getElementById('video')
     canvas = document.getElementById('canvas')
@@ -121,4 +127,4 @@ function startRecorder() {
         })
 }
 
-// startup()
+startup()
