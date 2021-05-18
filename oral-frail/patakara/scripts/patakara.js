@@ -10,9 +10,15 @@ let startbutton = null
 let constrains = {
     audio: true,
     video: {
-        facingMode: { exact: "environment" }
+        width: 640,
+        height: 480,
+        facingMode: null  // どのカメラを利用するか
+
+        // facingModeには最終的に以下のいずれかの値を入れる
+        //   facingMode: "user"                    // フロントカメラを利用する
+        //   facingMode: { exact: "environment" }  // リアカメラを利用する
     }
-}
+};
 let recorder = null
 let record_data = []
 
