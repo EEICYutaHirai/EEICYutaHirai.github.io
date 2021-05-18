@@ -45,7 +45,7 @@ function startup() {
         }
     }, false)
 
-    //startRecorder()
+    startRecorder()
 
     startbutton.addEventListener('click', function (ev) {
         startbutton.setAttribute('style', 'display:none');
