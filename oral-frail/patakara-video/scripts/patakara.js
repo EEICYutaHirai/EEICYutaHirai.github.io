@@ -121,4 +121,4 @@ function startRecorder() {
         })
 }
 
-startup()
+// startup()
