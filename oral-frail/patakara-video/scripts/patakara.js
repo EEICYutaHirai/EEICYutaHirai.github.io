@@ -10,13 +10,7 @@ let startbutton = null
 let constrains = {
     audio: true,
     video: {
-        width: 640,
-        height: 480,
-        facingMode: null  // どのカメラを利用するか
-
-        // facingModeには最終的に以下のいずれかの値を入れる
-        //   facingMode: "user"                    // フロントカメラを利用する
-        //   facingMode: { exact: "environment" }  // リアカメラを利用する
+        facingMode: "user"  // どのカメラを利用するか
     }
 };
 let recorder = null
@@ -29,8 +23,6 @@ function startup() {
     startbutton = document.getElementById('startbutton')
     stopbutton = document.getElementById('stopbutton')
     uploadbutton = document.getElementById('upload')
-
-    // navigator.mediaDevices.getUserMedia(constrains);
 
     videoStart()
 
@@ -82,14 +74,6 @@ function startup() {
 
 
     }, false);
-}
-
-async function playVideo() {
-    try {
-        await video.play();
-    } catch (err) {
-        console.log(err);
-    }
 }
 
 /**
