@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/style.css">
+    <title>モバイル端末による口腔機能の評価・訓練の実現に向けた口腔機能の調査</title>
+</head>
+
+<body>
+    <main>
+        <h1></h1>
+        <!-- <p>
+            このページはスマートフォンなどのモバイル端末で表示してください．
+        </p> -->
+        <p>
+            各ページで以下のように表示されたら，許可を押してください．
+            <img src="./images/permission.png" alt="マイクとカメラの使用を許可してください" style="object-fit: contain;">
+        </p>
+        <p>
+            途中で失敗しても構いせませんので，そのまま次の実験に進んでください．
+        </p>
+        <p>
+            google formsの最後のページで表示された番号を以下に入力し，「実験に進む」を押してください．
+        </p>
+        <label for="">番号:<input type="text" id="inputId"></label>
+        <button id="goNext">実験に進む</button>
+    </main>
+</body>
+<script>
+    var goNext = document.getElementById("goNext");
+    goNext.onclick = function (ev) {
+        var experimentId = inputId.value;
+        location.href = "./pa.html?id=" + String(experimentId);
+    };
+</script>
+
+</html>
