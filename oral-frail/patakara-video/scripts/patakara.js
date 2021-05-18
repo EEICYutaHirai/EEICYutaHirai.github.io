@@ -13,6 +13,7 @@ let constrains = {
         facingMode: "user"  // どのカメラを利用するか
     }
 };
+
 let recorder = null
 let record_data = []
 
