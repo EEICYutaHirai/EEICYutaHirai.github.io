@@ -130,7 +130,7 @@ function uploadVideo() {
     console.log(record_data)
     var blob = new Blob(record_data, { type: 'video/webm' })
     uploadRef.put(blob).then(function (snapshot) {
-        //location.href = "./" + next_word + ".html?id=" + String(experimentId);
+        location.href = "./" + next_word + ".html?id=" + String(experimentId);
     }).catch(function (e) {
         document.getElementById("error-upload").setAttribute('style', 'color:red;');
         console.log(e);
