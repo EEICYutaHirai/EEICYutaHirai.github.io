@@ -80,7 +80,7 @@ function load() {
                 description.setAttribute('style', 'display:none;');
                 recorder.stop();
                 // downloadbutton.setAttribute('style', '');
-                uploadVideo();
+                //uploadVideo();
                 console.log(hurusato_music);
             }
         }
@@ -200,13 +200,17 @@ function load() {
                 // video.play()
                 recorder = new MediaRecorder(stream)
                 recorder.ondataavailable = function (e) {
-                    var testvideo = document.getElementById('test')
-                    testvideo.setAttribute('controls', '')
-                    testvideo.setAttribute('width', width)
-                    testvideo.setAttribute('height', height)
-                    var outputdata = window.URL.createObjectURL(e.data)
-                    record_data.push(e.data)
-                    testvideo.src = outputdata
+                    if (e.data.size > 0) {
+                        record_data.push(e.data);
+                        uploadVideo();
+                    }
+                    // var testvideo = document.getElementById('test')
+                    // testvideo.setAttribute('controls', '')
+                    // testvideo.setAttribute('width', width)
+                    // testvideo.setAttribute('height', height)
+                    // var outputdata = window.URL.createObjectURL(e.data)
+                    // record_data.push(e.data)
+                    // testvideo.src = outputdata
                 }
                 input = audioContext.createMediaStreamSource(stream);
                 gumStream = stream;
