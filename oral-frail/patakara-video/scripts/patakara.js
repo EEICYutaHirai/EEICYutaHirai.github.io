@@ -23,6 +23,34 @@ window.AudioContext = window.AudioContext ||
     navigator.msAudioContext;
 let audioContext = new window.AudioContext();
 
+const current_word = window.location.href.split('/').pop().split('.')[0];
+if (current_word != "pa") {
+    document.getElementById("descriptionExplainingSame").setAttribute("style", "");
+}
+
+let patakara_words = document.getElementsByClassName("patakara-word");
+console.log(patakara_words);
+console.log(patakara_words[0]);
+for (let i = 0; i < patakara_words.length; i++) {
+    console.log(patakara_words[i]);
+
+    switch (current_word) {
+        case "pa": patakara_words[i].innerHTML = "パ"; break;
+        case "ta": patakara_words[i].innerHTML = "タ"; break;
+        case "ka": patakara_words[i].innerHTML = "カ"; break;
+        case "ra": patakara_words[i].innerHTML = "ラ"; break;
+        default: next_word = "karaoke-description"; break;
+    }
+}
+
+let next_word = "";
+switch (current_word) {
+    case "pa": next_word = "ta"; break;
+    case "ta": next_word = "ka"; break;
+    case "ka": next_word = "ra"; break;
+    default: next_word = "karaoke-description"; break;
+}
+
 function startup() {
     video = document.getElementById('video')
     canvas = document.getElementById('canvas')
@@ -44,7 +72,7 @@ function startup() {
         }
     }, false)
 
-    // startRecorder()
+    //startRecorder()
 
     startbutton.addEventListener('click', function (ev) {
         startbutton.setAttribute('style', 'display:none');
@@ -65,9 +93,9 @@ function startup() {
                 description.setAttribute('style', 'color:red;')
 
                 setTimeout(function () {
-                    uploadVideo();
-                    //description.setAttribute('style', 'display:none;');
                     recorder.stop();
+                    //uploadVideo();
+                    //description.setAttribute('style', 'display:none;');
                     //uploadbutton.setAttribute('style', '');
                     //document.getElementById('next-page').setAttribute('style', 'display:none;');
 
@@ -81,6 +109,32 @@ function startup() {
 
 
     }, false);
+}
+
+function uploadVideo() {
+    var firebaseConfig = {
+        apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
+        authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
+        projectId: "oralfrailexperiment-19fa7",
+        storageBucket: "oralfrailexperiment-19fa7.appspot.com",
+        messagingSenderId: "550131966506",
+        appId: "1:550131966506:web:31e8df4ba565a295ded953"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    storageRef = firebase.storage().ref();
+
+    experimentId = window.location.search.slice(4);
+    var uploadRef = storageRef.child(experimentId + "/" + current_word + '-' + String(Date.now()) + '.webm');
+    console.log(record_data[0])
+    console.log(record_data)
+    var blob = new Blob(record_data, { type: 'video/webm' })
+    uploadRef.put(blob).then(function (snapshot) {
+        //location.href = "./" + next_word + ".html?id=" + String(experimentId);
+    }).catch(function (e) {
+        document.getElementById("error-upload").setAttribute('style', 'color:red;');
+        console.log(e);
+    });
 }
 
 /**
@@ -99,9 +153,12 @@ function videoStart() {
                 // testvideo.setAttribute('controls', '')
                 // testvideo.setAttribute('width', width)
                 // testvideo.setAttribute('height', height)
-                var outputdata = window.URL.createObjectURL(e.data)
-                record_data.push(e.data)
-                testvideo.src = outputdata
+                //var outputdata = window.URL.createObjectURL(e.data)
+                if (e.data.size > 0) {
+                    record_data.push(e.data);
+                    uploadVideo();
+                }
+                // testvideo.src = outputdata
             }
             input = audioContext.createMediaStreamSource(stream);
             gumStream = stream;
