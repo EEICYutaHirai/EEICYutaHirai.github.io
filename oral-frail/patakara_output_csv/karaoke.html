@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>モバイル端末による口腔機能の評価・訓練の実現に向けた口腔機能の調査</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <script src="./scripts/abcjs-basic-min.js" type="text/javascript"></script>
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
+    <script>
+        function uploadVideo() {
+            // console.log(record_data)
+            // var blob = new Blob(record_data, { type: 'video/webm' })
+            // var url = window.URL.createObjectURL(blob)
+            // var a = document.createElement('a')
+            // document.body.appendChild(a)
+            // a.style = 'display:none'
+            // a.href = url;
+            // a.download = 'test.webm'
+            // a.click()
+            // window.URL.revokeObjectURL(url)
+            let firebaseConfig = {
+                apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
+                authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
+                projectId: "oralfrailexperiment-19fa7",
+                storageBucket: "oralfrailexperiment-19fa7.appspot.com",
+                messagingSenderId: "550131966506",
+                appId: "1:550131966506:web:31e8df4ba565a295ded953"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            storageRef = firebase.storage().ref();
+
+            let experimentId = window.location.search.slice(4);
+            let uploadRef = storageRef.child(experimentId + '/karaoke.webm');
+            let blob = new Blob(record_data, { type: 'video/webm' })
+            uploadRef.put(blob).then(function (snapshot) {
+                //location.href = "./end.html?id=" + String(experimentId);
+            }).catch(function (e) {
+                document.getElementById('alert').setAttribute('style', '');
+                console.log(e);
+            });
+        }
+    </script>
+    <script src="./scripts/hurusato.js" type="text/javascript"></script>
+</head>
+
+<body onload="load()">
+    <main>
+        <header>
+            <h1 style="text-align:center;">ふるさとの歌唱(本番)</h1>
+        </header>
+
+        <p>
+            この実験では，あなたに日本の童謡「ふるさと」を歌っていただきます．このページは<strong>本番</strong>です．以下の説明を読んでスタートボタンを押し，実験を開始してください．
+        </p>
+        <ol>
+            <li>このページの一番下にカメラの映像が映し出されています．下の写真のように鼻と口がカメラに収まるようにカメラの位置を調整してください．目より上の部分を含める必要はありません．</li>
+            <img src="./images/below-nose.jpg" alt="below-nose">
+            <li>スマートフォンを固定して実験中にカメラが動かないようにしてください．</li>
+            <li>スタートボタンを押すと3秒間のカウントダウンが始まります．カウントダウンが0になると，演奏が始まりますので，演奏に合わせて歌詞を歌ってください．カラオケのように，下の楽譜の歌うべき場所が赤く表示されます．
+            </li>
+            <li>歌が終わると自動的にページが移動しますので，指示に従って次の実験を行ってください．</li>
+        </ol>
+
+        <div class="container">
+            <div id="paper"></div>
+            <div class="row">
+                <div>
+                    <!-- <button id="activate-audio" 　style="display:none;">スタート</button>
+                    <button id="stop-audio" style="display:none;">停止</button>
+                    <div class='audio-error' style="display:none;">Audio is not supported in this browser.</div>
+                    <div id='recording' style="display:none;">録音中</div>
+                    <a href="" download id="download-link" style="display:none;">download</a> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="camera">
+            <video id="video" muted>Video stream not available.</video>
+        </div><br>
+        <button id="startbutton">スタート</button>
+        <p id="description" style='display:none;'></p><button id="stopbutton"
+            style="display: none;">stop!!</button><button id="download" style="display:none;">動画をダウンロードする</button><br>
+        <div>
+            <video id="test"></video>
+        </div>
+    </main>
+    <ol id="recordingsList"></ol>
+</body>
+
+</html>
