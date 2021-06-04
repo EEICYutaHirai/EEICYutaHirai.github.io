@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>同意書の提出</h1>
+    <label>アカウント名を入力してください(タスクの承認時に使用します)．</label>
+    <br>
+    <input id="account_id">
+    <br><br>
+    <label>同意書を添付してください</label>
+    <br>
+    <input type="file" id="consent_form">
+    <br><br>
+    <button id="submit_button" onclick="upload()">
+        提出する
+    </button>
+
+
+</body>
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
+<script>
+    function upload() {
+        // console.log(record_data)
+        // var blob = new Blob(record_data, { type: 'video/webm' })
+        // var url = window.URL.createObjectURL(blob)
+        // var a = document.createElement('a')
+        // document.body.appendChild(a)
+        // a.style = 'display:none'
+        // a.href = url;
+        // a.download = 'test.webm'
+        // a.click()
+        // window.URL.revokeObjectURL(url)
+        let firebaseConfig = {
+            apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
+            authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
+            projectId: "oralfrailexperiment-19fa7",
+            storageBucket: "oralfrailexperiment-19fa7.appspot.com",
+            messagingSenderId: "550131966506",
+            appId: "1:550131966506:web:31e8df4ba565a295ded953"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        storageRef = firebase.storage().ref();
+
+        var date = new Date();
+        var timestamp = date.getTime()
+        let uploadRef = storageRef.child('consent_form/' + account_id.value + '-' + timestamp);
+        uploadRef.put(consent_form.files[0]).then(function (snapshot) {
+            location.href = "./submitted.html";
+        }).catch(function (e) {
+            // document.getElementById('alert').setAttribute('style', '');
+            console.log(e);
+        });
+    }
+</script>
+
+</html>
