@@ -118,31 +118,31 @@ function saveVideo() {
     location.href = "./" + next_word + ".html?id=" + String(experimentId);
 }
 
-function uploadVideo() {
-    var firebaseConfig = {
-        apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
-        authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
-        projectId: "oralfrailexperiment-19fa7",
-        storageBucket: "oralfrailexperiment-19fa7.appspot.com",
-        messagingSenderId: "550131966506",
-        appId: "1:550131966506:web:31e8df4ba565a295ded953"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    storageRef = firebase.storage().ref();
+// function uploadVideo() {
+//     var firebaseConfig = {
+//         apiKey: "AIzaSyBoc4yB0ufBepHvS2IZqfRM2C4i3xtgAxQ",
+//         authDomain: "oralfrailexperiment-19fa7.firebaseapp.com",
+//         projectId: "oralfrailexperiment-19fa7",
+//         storageBucket: "oralfrailexperiment-19fa7.appspot.com",
+//         messagingSenderId: "550131966506",
+//         appId: "1:550131966506:web:31e8df4ba565a295ded953"
+//     };
+//     // Initialize Firebase
+//     firebase.initializeApp(firebaseConfig);
+//     storageRef = firebase.storage().ref();
 
-    experimentId = window.location.search.slice(4);
-    var uploadRef = storageRef.child(experimentId + "/" + current_word + '-' + String(Date.now()) + '.webm');
-    console.log(record_data[0])
-    console.log(record_data)
-    var blob = new Blob(record_data, { type: 'video/webm' })
-    uploadRef.put(blob).then(function (snapshot) {
-        location.href = "./" + next_word + ".html?id=" + String(experimentId);
-    }).catch(function (e) {
-        document.getElementById("error-upload").setAttribute('style', 'color:red;');
-        console.log(e);
-    });
-}
+//     experimentId = window.location.search.slice(4);
+//     var uploadRef = storageRef.child(experimentId + "/" + current_word + '-' + String(Date.now()) + '.webm');
+//     console.log(record_data[0])
+//     console.log(record_data)
+//     var blob = new Blob(record_data, { type: 'video/webm' })
+//     uploadRef.put(blob).then(function (snapshot) {
+//         location.href = "./" + next_word + ".html?id=" + String(experimentId);
+//     }).catch(function (e) {
+//         document.getElementById("error-upload").setAttribute('style', 'color:red;');
+//         console.log(e);
+//     });
+// }
 
 /**
  * カメラ操作を開始する
