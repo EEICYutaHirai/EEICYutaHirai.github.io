@@ -23,33 +23,33 @@ window.AudioContext = window.AudioContext ||
     navigator.msAudioContext;
 let audioContext = new window.AudioContext();
 
-const current_word = window.location.href.split('/').pop().split('.')[0];
-if (current_word != "pa") {
-    document.getElementById("descriptionExplainingSame").setAttribute("style", "");
-}
+// const current_word = window.location.href.split('/').pop().split('.')[0];
+// if (current_word != "pa") {
+//     document.getElementById("descriptionExplainingSame").setAttribute("style", "");
+// }
 
-let patakara_words = document.getElementsByClassName("patakara-word");
-console.log(patakara_words);
-console.log(patakara_words[0]);
-for (let i = 0; i < patakara_words.length; i++) {
-    console.log(patakara_words[i]);
+// let patakara_words = document.getElementsByClassName("patakara-word");
+// console.log(patakara_words);
+// console.log(patakara_words[0]);
+// for (let i = 0; i < patakara_words.length; i++) {
+//     console.log(patakara_words[i]);
 
-    switch (current_word) {
-        case "pa": patakara_words[i].innerHTML = "パ"; break;
-        case "ta": patakara_words[i].innerHTML = "タ"; break;
-        case "ka": patakara_words[i].innerHTML = "カ"; break;
-        case "ra": patakara_words[i].innerHTML = "ラ"; break;
-        default: next_word = "karaoke-description"; break;
-    }
-}
+//     switch (current_word) {
+//         case "pa": patakara_words[i].innerHTML = "パ"; break;
+//         case "ta": patakara_words[i].innerHTML = "タ"; break;
+//         case "ka": patakara_words[i].innerHTML = "カ"; break;
+//         case "ra": patakara_words[i].innerHTML = "ラ"; break;
+//         default: next_word = "karaoke-description"; break;
+//     }
+// }
 
-let next_word = "";
-switch (current_word) {
-    case "pa": next_word = "ta"; break;
-    case "ta": next_word = "ka"; break;
-    case "ka": next_word = "ra"; break;
-    default: next_word = "karaoke-description"; break;
-}
+// let next_word = "";
+// switch (current_word) {
+//     case "pa": next_word = "ta"; break;
+//     case "ta": next_word = "ka"; break;
+//     case "ka": next_word = "ra"; break;
+//     default: next_word = "karaoke-description"; break;
+// }
 
 function startup() {
     video = document.getElementById('video')
@@ -57,7 +57,7 @@ function startup() {
     photo = document.getElementById('photo')
     startbutton = document.getElementById('startbutton')
     stopbutton = document.getElementById('stopbutton')
-    uploadbutton = document.getElementById('upload')
+    uploadbutton = document.getElementById('uploadbutton')
 
     videoStart()
 
@@ -70,9 +70,13 @@ function startup() {
             video.setAttribute('height', height);
             streaming = true;
         }
-    }, false)
+    }, false);
 
     //startRecorder()
+
+    uploadbutton.addEventListener('click', function (ev) {
+        recorder.stop();
+    }, false)
 
     startbutton.addEventListener('click', function (ev) {
         startbutton.setAttribute('style', 'display:none');
@@ -82,28 +86,40 @@ function startup() {
         let count = 3;
         let start = new Date();
         description.innerHTML = "実験開始まで" + count + "秒前";
-        let x = setInterval(function () {
-            let now = new Date();
-            description.innerHTML = "実験開始まで" + Math.ceil((count - (now - start) / 1000)) + "秒前";
-            if ((count - (now - start) / 1000) < 0) {
-                recorder.start();
-                ev.preventDefault();
+        recorder.start();
+        ev.preventDefault();
 
-                description.innerHTML = "録画中";
-                description.setAttribute('style', 'color:red;')
+        description.innerHTML = "録画中";
+        description.setAttribute('style', 'color:red;')
+        uploadbutton.setAttribute('style', '')
+        // let x = setInterval(function () {
+        //     let now = new Date();
+        //     description.innerHTML = "実験開始まで" + Math.ceil((count - (now - start) / 1000)) + "秒前";
+        //     if ((count - (now - start) / 1000) < 0) {
+        //         recorder.start();
+        //         ev.preventDefault();
 
-                setTimeout(function () {
-                    recorder.stop();
-                    //uploadVideo();
-                    //description.setAttribute('style', 'display:none;');
-                    //uploadbutton.setAttribute('style', '');
-                    //document.getElementById('next-page').setAttribute('style', 'display:none;');
+        //         description.innerHTML = "録画中";
+        //         description.setAttribute('style', 'color:red;')
+        //         uploadbutton.setAttribute('style', '')
 
-                }, 5000);
 
-                clearInterval(x);
-            }
-        }, 100);
+        //         // setTimeout(function () {
+        //         //     recorder.stop();
+        //         //     //uploadVideo();
+        //         //     //description.setAttribute('style', 'display:none;');
+        //         //     //uploadbutton.setAttribute('style', '');
+        //         //     //document.getElementById('next-page').setAttribute('style', 'display:none;');
+
+        //         // }, 5000);
+
+        //         clearInterval(x);
+        //     }
+        // }, 100);
+
+
+
+
     }, false);
 }
 
@@ -113,9 +129,9 @@ function saveVideo() {
     let a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.target = "_blank";
-    a.download = experimentId + "_" + current_word + '-' + String(Date.now()) + '.webm';
+    a.download = experimentId + "_" + 'sentence' + '-' + String(Date.now()) + '.webm';
     a.click();
-    location.href = "./" + next_word + ".html?id=" + String(experimentId);
+    location.href = "./end.html?id=" + String(experimentId);
 }
 
 // function uploadVideo() {
@@ -132,12 +148,12 @@ function saveVideo() {
 //     storageRef = firebase.storage().ref();
 
 //     experimentId = window.location.search.slice(4);
-//     var uploadRef = storageRef.child(experimentId + "/" + current_word + '-' + String(Date.now()) + '.webm');
+//     var uploadRef = storageRef.child(experimentId + "/" + 'sentence' + '-' + String(Date.now()) + '.webm');
 //     console.log(record_data[0])
 //     console.log(record_data)
 //     var blob = new Blob(record_data, { type: 'video/webm' })
 //     uploadRef.put(blob).then(function (snapshot) {
-//         location.href = "./" + next_word + ".html?id=" + String(experimentId);
+//         location.href = "./end.html?id=" + String(experimentId);
 //     }).catch(function (e) {
 //         document.getElementById("error-upload").setAttribute('style', 'color:red;');
 //         console.log(e);
@@ -163,7 +179,6 @@ function videoStart() {
                 //var outputdata = window.URL.createObjectURL(e.data)
                 if (e.data.size > 0) {
                     record_data.push(e.data);
-                    //uploadVideo();
                     saveVideo();
                 }
                 // testvideo.src = outputdata
