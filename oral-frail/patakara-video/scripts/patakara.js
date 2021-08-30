@@ -81,6 +81,8 @@ function startup() {
         // countdown
         let count = 3;
         let start = new Date();
+        instruction = document.getElementById('instruction');
+        instruction.setAttribute('hidden', true);
         description.innerHTML = "実験開始まで" + count + "秒前";
         let x = setInterval(function () {
             let now = new Date();
@@ -129,8 +131,6 @@ function uploadVideo() {
     //     document.getElementById("error-upload").setAttribute('style', 'color:red;');
     //     console.log(e);
     // });
-    instruction = document.getElementById('instruction');
-    instruction.setAttribute('hidden', true);
     video.style.display = 'none';
     description.innerHTML = 'アップロード中';
     description.setAttribute('style', 'color:blue;')
