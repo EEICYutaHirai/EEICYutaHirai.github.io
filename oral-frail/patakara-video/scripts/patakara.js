@@ -1,4 +1,4 @@
-let width = 640    // We will scale the photo width to this
+let width = document.body.clientWidth    // We will scale the photo width to this
 let height = 0     // This will be computed based on the input stream
 
 let streaming = false
