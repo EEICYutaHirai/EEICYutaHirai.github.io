@@ -37,10 +37,15 @@
                 <li>5秒間たつと録画が終了し，自動で次の実験ページに移動します．</li>
             </ol>
         </div>
-        <p id="description" style='display:none;'></p>
-        <div class="camera">
+        <div class="container-video camera" id="container-video">
+            <div class="table-center">
+                <div>
+                    <p id="description" style='display:none;'></p>
+                </div>
+            </div>
             <video id="video" muted autoplay playsinline>Video stream not available.</video>
-        </div><br>
+        </div>
+        <p id="uploading" style='display:none;'>アップロード中</p>
         <div id="progressbar"></div>
         <button id="startbutton">スタート</button>
         <!-- <div>

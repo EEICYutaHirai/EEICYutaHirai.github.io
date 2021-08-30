@@ -131,9 +131,8 @@ function uploadVideo() {
     //     document.getElementById("error-upload").setAttribute('style', 'color:red;');
     //     console.log(e);
     // });
-    video.style.display = 'none';
-    description.innerHTML = 'アップロード中';
-    description.setAttribute('style', 'color:blue;')
+    document.getElementById('container-video').setAttribute('hidden', true);
+    uploading.setAttribute('style', 'color:blue;')
 
     var bar = new ProgressBar.Circle(progressbar, {
         color: '#aaa',
