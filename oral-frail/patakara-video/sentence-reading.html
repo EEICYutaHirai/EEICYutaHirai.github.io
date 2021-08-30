@@ -12,37 +12,39 @@
 
 <body>
     <main>
-        <h1>
-            文章の音読
-        </h1>
-        <p>
-            文章の音読をしていただきます．
-        </p>
-        <p>
-            以下の説明を読み，スタートボタンを押してカウントダウン後に文章の音読を始めてください．
-        </p>
+        <div id="instruction">
+            <h1>
+                文章の音読
+            </h1>
+            <p>
+                文章の音読をしていただきます．
+            </p>
+            <p>
+                以下の説明を読み，スタートボタンを押してカウントダウン後に文章の音読を始めてください．
+            </p>
 
-        <ol>
-            <li>このページの一番下にカメラの映像が映し出されています．下の写真のように鼻と口がカメラに収まるようにカメラの位置を調整してください．目より上の部分を含める必要はありません．</li>
-            <img src="./images/below-nose.jpg" alt="below-nose">
-            <li>スマートフォンを固定して実験中にカメラが動かないようにしてください．</li>
-            <li>スタートボタンを押したら以下の「北風と太陽」の一節を音読してください．</li>
-            <li>読み終えたら，「終了」ボタンを押してください．</li>
-        </ol>
+            <ol>
+                <li>このページの一番下にカメラの映像が映し出されています．下の写真のように鼻と口がカメラに収まるようにカメラの位置を調整してください．目より上の部分を含める必要はありません．</li>
+                <img src="./images/below-nose.jpg" alt="below-nose">
+                <li>スマートフォンを固定して実験中にカメラが動かないようにしてください．</li>
+                <li>スタートボタンを押したら以下の「北風と太陽」の一節を音読してください．</li>
+                <li>読み終えたら，「終了」ボタンを押してください．</li>
+            </ol>
 
-        <p>
-            <strong>
-                あるひ，きたかぜとたいようがちからくらべをしました．たびびとのがいとうをぬがせたほうがかちということにきめて，まず，
-                かぜからはじめました．かぜは，「ようし，ひとめくりにしてやろう」とはげしくふきたてました．かぜがふけばふくほど，たびびとはがいとうをぴったりからだにまきつけました．つぎは，たいようのばんになりました．たいようはくものあいだからかおをだして，あたたかなひざしをおくりました．たぴぴとはだんだんよいこころもちになり，がいとうをぬぎすてました．そこで，
-                かぜのまけになりました．
-            </strong>
-        </p>
-
+            <p>
+                <strong>
+                    あるひ，きたかぜとたいようがちからくらべをしました．たびびとのがいとうをぬがせたほうがかちということにきめて，まず，
+                    かぜからはじめました．かぜは，「ようし，ひとめくりにしてやろう」とはげしくふきたてました．かぜがふけばふくほど，たびびとはがいとうをぴったりからだにまきつけました．つぎは，たいようのばんになりました．たいようはくものあいだからかおをだして，あたたかなひざしをおくりました．たぴぴとはだんだんよいこころもちになり，がいとうをぬぎすてました．そこで，
+                    かぜのまけになりました．
+                </strong>
+            </p>
+        </div>
+        <p id="description" style='display:none;'></p>
         <div class="camera">
             <video id="video" muted autoplay playsinline>Video stream not available.</video>
         </div><br>
         <button id="startbutton">スタート</button>
-        <p id="description" style='display:none;'></p>
+        <div id="progressbar"></div>
         <button id="uploadbutton" style="display:none;">終了</button><br>
         <!-- <div>
         <video id="test"></video>
@@ -53,6 +55,7 @@
 </body>
 <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-storage.js"></script>
+<script src="./scripts/progressbar.js"></script>
 <script src="./scripts/sentence-reading.js"></script>
 
 </html>

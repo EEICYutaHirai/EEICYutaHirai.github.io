@@ -140,12 +140,64 @@ function uploadVideo() {
     var uploadRef = storageRef.child(experimentId + "/" + 'sentence' + '-' + String(Date.now()) + '.webm');
     console.log(record_data[0])
     console.log(record_data)
-    var blob = new Blob(record_data, { type: 'video/webm' })
-    uploadRef.put(blob).then(function (snapshot) {
-        location.href = "./end.html?id=" + String(experimentId);
-    }).catch(function (e) {
+
+    instruction = document.getElementById('instruction');
+    instruction.setAttribute('hidden', true);
+
+    video.style.display = 'none';
+    description.innerHTML = 'アップロード中';
+    description.setAttribute('style', 'color:blue;')
+
+    var bar = new ProgressBar.Circle(progressbar, {
+        color: '#aaa',
+        // This has to be the same size as the maximum width to
+        // prevent clipping
+        strokeWidth: 4,
+        trailWidth: 1,
+        easing: 'easeInOut',
+        duration: 1400,
+        text: {
+            autoStyleContainer: false
+        },
+        from: { color: '#aaa', width: 1 },
+        to: { color: '#333', width: 4 },
+        // Set default step function for all animate calls
+        step: function (state, circle) {
+            circle.path.setAttribute('stroke', state.color);
+            circle.path.setAttribute('stroke-width', state.width);
+
+            var value = Math.round(circle.value() * 100);
+            if (value === 0) {
+                circle.setText('');
+            } else {
+                circle.setText(value);
+            }
+
+        }
+    });
+    bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+    bar.text.style.fontSize = '2rem';
+
+    var blob = new Blob(record_data, { type: 'video/webm' });
+    uploadRef.put(blob).on('state_changed', function (snapshot) {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes);
+        bar.animate(progress);
+        console.log('Upload is ' + progress * 100 + '% done');
+        switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+        }
+    }, function (error) {
         document.getElementById("error-upload").setAttribute('style', 'color:red;');
         console.log(e);
+    }, function () {
+        location.href = "./end.html?id=" + String(experimentId);
     });
 }
 
