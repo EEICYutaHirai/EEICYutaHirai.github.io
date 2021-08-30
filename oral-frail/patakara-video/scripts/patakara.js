@@ -162,12 +162,14 @@ function uploadVideo() {
 
         }
     });
+    bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+    bar.text.style.fontSize = '2rem';
     uploadRef.put(blob).on('state_changed', function (snapshot) {
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes);
         bar.animate(progress);
-        console.log('Upload is ' + progress + '% done');
+        console.log('Upload is ' + progress * 100 + '% done');
         switch (snapshot.state) {
             case firebase.storage.TaskState.PAUSED: // or 'paused'
                 console.log('Upload is paused');
