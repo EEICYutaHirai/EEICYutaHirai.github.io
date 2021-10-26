@@ -19,6 +19,8 @@ let useFront = false;
 let recorder = null
 let record_data = []
 
+let curStream = null;
+
 window.AudioContext = window.AudioContext ||
     window.webkitAudioContext ||
     navigator.mozAudioContext ||
@@ -68,6 +70,11 @@ function startup() {
     document.querySelector("#btn-toggle").addEventListener("click", () => {
         constrains.video.facingMode = (useFront) ? "user" : { exact: "environment" };
         useFront = !useFront;      // boolean値を反転
+        if (curStream !== null) {
+            curStream.getVideoTracks().forEach((camera) => {
+                camera.stop();
+            });
+        }
         videoStart()
     });
 
@@ -203,6 +210,7 @@ function videoStart() {
     streaming = false
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
+            curStream = stream;
             video.srcObject = stream
             // video.play()
             recorder = new MediaRecorder(stream)
