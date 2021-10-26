@@ -68,6 +68,7 @@ function startup() {
     document.querySelector("#btn-toggle").addEventListener("click", () => {
         constrains.video.facingMode = (useFront) ? "user" : { exact: "environment" };
         useFront = !useFront;      // boolean値を反転
+        videoStart()
     });
 
     //メディアが再生できるようになったとき
