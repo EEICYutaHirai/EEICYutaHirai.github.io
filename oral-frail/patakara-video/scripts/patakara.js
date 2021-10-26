@@ -54,7 +54,7 @@ switch (current_word) {
     case "pa": next_word = "ta"; break;
     case "ta": next_word = "ka"; break;
     case "ka": next_word = "ra"; break;
-    default: next_word = "karaoke-description"; break;
+    default: next_word = "karaoke"; break;
 }
 
 function startup() {
