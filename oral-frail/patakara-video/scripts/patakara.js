@@ -65,11 +65,13 @@ function startup() {
     stopbutton = document.getElementById('stopbutton')
     uploadbutton = document.getElementById('upload')
 
+    useFront = false
+
     videoStart()
 
     document.querySelector("#btn-toggle").addEventListener("click", () => {
-        constrains.video.facingMode = (useFront) ? "user" : { exact: "environment" };
         useFront = !useFront;      // boolean値を反転
+        constrains.video.facingMode = (useFront) ? "user" : { exact: "environment" };
         if (curStream !== null) {
             curStream.getVideoTracks().forEach((camera) => {
                 camera.stop();
