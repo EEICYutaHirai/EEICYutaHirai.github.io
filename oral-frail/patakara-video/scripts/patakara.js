@@ -39,7 +39,7 @@ for (let i = 0; i < patakara_words.length; i++) {
         case "ta": patakara_words[i].innerHTML = "タ"; break;
         case "ka": patakara_words[i].innerHTML = "カ"; break;
         case "ra": patakara_words[i].innerHTML = "ラ"; break;
-        default: next_word = "karaoke-description"; break;
+        default: next_word = "karaoke"; break;
     }
 }
 
