@@ -26,9 +26,13 @@ let startbutton = null
 let constrains = {
     audio: true,
     video: {
-        facingMode: "user"  // どのカメラを利用するか
+        facingMode: { exact: "environment" }
+        // facingMode: "user"
     }
 };
+let useFront = false;
+let curStream = null;
+
 let recorder = null
 let record_data = []
 let input;
@@ -68,7 +72,19 @@ function load() {
     stopbutton = document.getElementById('stopbutton')
     downloadbutton = document.getElementById('download')
 
+    useFront = false
     videoStart();
+
+    document.querySelector("#btn-toggle").addEventListener("click", () => {
+        useFront = !useFront;      // boolean値を反転
+        constrains.video.facingMode = (useFront) ? "user" : { exact: "environment" };
+        if (curStream !== null) {
+            curStream.getVideoTracks().forEach((camera) => {
+                camera.stop();
+            });
+        }
+        videoStart()
+    });
 
 
     var timingCallbacks = new ABCJS.TimingCallbacks(visualObj, {
@@ -197,6 +213,7 @@ function load() {
         navigator.mediaDevices.getUserMedia(constrains)
             .then(function (stream) {
                 video.srcObject = stream
+                curStream = stream;
                 // video.play()
                 recorder = new MediaRecorder(stream)
                 recorder.ondataavailable = function (e) {

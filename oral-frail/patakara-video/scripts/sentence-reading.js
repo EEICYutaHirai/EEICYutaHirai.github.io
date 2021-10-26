@@ -10,10 +10,12 @@ let startbutton = null
 let constrains = {
     audio: true,
     video: {
-        facingMode: "user"  // どのカメラを利用するか
+        facingMode: { exact: "environment" }
     }
 };
 
+let curStream = null;
+let useFront = false;
 let recorder = null
 let record_data = []
 
@@ -58,8 +60,20 @@ function startup() {
     startbutton = document.getElementById('startbutton')
     stopbutton = document.getElementById('stopbutton')
     uploadbutton = document.getElementById('uploadbutton')
+    useFront = false
 
     videoStart()
+
+    document.querySelector("#btn-toggle").addEventListener("click", () => {
+        useFront = !useFront;      // boolean値を反転
+        constrains.video.facingMode = (useFront) ? "user" : { exact: "environment" };
+        if (curStream !== null) {
+            curStream.getVideoTracks().forEach((camera) => {
+                camera.stop();
+            });
+        }
+        videoStart()
+    });
 
     //メディアが再生できるようになったとき
     video.addEventListener('canplay', function (ev) {
@@ -73,6 +87,8 @@ function startup() {
     }, false);
 
     //startRecorder()
+
+
 
     uploadbutton.addEventListener('click', function (ev) {
         recorder.stop();
@@ -209,6 +225,7 @@ function videoStart() {
     streaming = false
     navigator.mediaDevices.getUserMedia(constrains)
         .then(function (stream) {
+            curStream = stream
             video.srcObject = stream
             // video.play()
             recorder = new MediaRecorder(stream)
