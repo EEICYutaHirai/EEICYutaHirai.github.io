@@ -10,7 +10,7 @@ let startbutton = null
 let constrains = {
     audio: true,
     video: {
-        // facingMode: { exact: "environment" }
+        facingMode: { exact: "environment" }
         // facingMode: "user"
     }
 };
