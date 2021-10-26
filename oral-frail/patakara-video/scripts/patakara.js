@@ -10,9 +10,11 @@ let startbutton = null
 let constrains = {
     audio: true,
     video: {
-        facingMode: "user"  // どのカメラを利用するか
+        // facingMode: { exact: "environment" }
+        // facingMode: "user"
     }
 };
+let useFront = false;
 
 let recorder = null
 let record_data = []
@@ -27,6 +29,8 @@ const current_word = window.location.href.split('/').pop().split('.')[0];
 if (current_word != "pa") {
     document.getElementById("descriptionExplainingSame").setAttribute("style", "");
 }
+
+
 
 let patakara_words = document.getElementsByClassName("patakara-word");
 console.log(patakara_words);
@@ -60,6 +64,11 @@ function startup() {
     uploadbutton = document.getElementById('upload')
 
     videoStart()
+
+    document.querySelector("#btn-toggle").addEventListener("click", () => {
+        constrains.video.facingMode = (useFront) ? "user" : { exact: "environment" };
+        useFront = !useFront;      // boolean値を反転
+    });
 
     //メディアが再生できるようになったとき
     video.addEventListener('canplay', function (ev) {
